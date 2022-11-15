@@ -13,8 +13,8 @@
 ## Matriculation number: 2568884
 ## Name: Chaahat Jain
 ## Matriculation number: 7025099
-## Name:
-## Matriculation number:
+## Name: Dennis Krieger
+## Matriculation number: 7021772
 
 
 ## Many of the things on this exercise sheet have not been discussed in class. 
