@@ -165,7 +165,7 @@ p <- 2/6
 dbinom(3,size = 20,prob=p)
 
 ## c) Next please calculate the probability of getting less than 6 points
-pbinom(6, 20, p, lower.tail = TRUE) # 48%
+pbinom(5, 20, p, lower.tail = TRUE) # 29.7%
 
 ## d) What is the difference between density function and distribution function?
 # distribution function is used for discrete random variables
