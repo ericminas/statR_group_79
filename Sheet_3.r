@@ -123,20 +123,19 @@ chi
 
 ## c. the last call produced a warning. To understand why this warning arises, look
 ##    at observed and expected frequencies of chi
-table(clean$drink, clean$sleepProblem, dnn= c("drinks", "sleepProblems"))
+chi$expected
+chi$observed
 
-## d. What are the expected frequencies? Do we need to look at expected or
+## d. What are the expected frequencies? Do we need to look at expected or 
 ##    observed frequencies?
-# We expect that the sleep problems are randomly distributed over the drink choices:
-# - coffee -> expected: 53/3 = 17.6 ~ 18
-# - tea -> expected: 53/3 = 17.6 ~ 18
-# - water -> expected: 53/3 = 17.6 ~ 17
+chi$expected
+# We look at the observed frequencies as that corresponds to our data 
+chi$observed
 
 ## e. a possible solution is to sample more participants. Given that the smallest
 ##    admissible value is 5, from which group(s) in terms of preferred drinks do
 ##    we have to sample more?
-# tea has the smallest total number of samples (13), while water has the smallest sample for "no sleep problems".
-# Thus water should be sampled first, so that the threshold of five can be superceeded in each category.
+# tea has the smallest total number of samples (13).
 
 ## f. Assume we don't have the possibility to sample more students. Which test do
 ##    you have to run instead? How does it work roughly? Perform a suitable test
@@ -144,7 +143,7 @@ table(clean$drink, clean$sleepProblem, dnn= c("drinks", "sleepProblems"))
 # We create all tables that can be produced by changing the values in rows and columns, with the constraint that all totals must stay the same
 # Then we determine the sum of probabilities of the tables which were more extreme than the original table
 # if the sum is less than 0.05, we reject the null-hypothesis
-fisher.test(table(clean$drink, clean$sleepProblem, dnn= c("drinks", "sleepProblems")))
+fisher.test(table(clean$drink, clean$sleepProblem))
 
 ## g. Lastly, what is the conclusion of your test? What have you learned and what
 ##    have you not learned?
@@ -159,20 +158,18 @@ fisher.test(table(clean$drink, clean$sleepProblem, dnn= c("drinks", "sleepProble
 ##  each time the number is higher than 4. You roll 20 times
 
 ## a) What is the chance in a single roll of earning a point?
-# The probality is 3 * (1/6) = 0.5 (50%)
+p <- 2/6
 
 ## b) Please calculate the probability of getting exactly 3 points.
 ##    Calculate this using the dbinom() function.
-dbinom(3,size = 20,prob=0.5)
+dbinom(3,size = 20,prob=p)
 
 ## c) Next please calculate the probability of getting less than 6 points
-sum(dbinom(seq(0,5,1),size = 20,prob=0.5))
+pbinom(6, 20, p, lower.tail = TRUE) # 48%
 
 ## d) What is the difference between density function and distribution function?
-# The density functions shows how many tests have the same values 
-#(i.e. the likeliness of the value but without explicitly calculating it)
-# The distribution funcions shows how the values are distributed over the spectrum
-# of possible values, but without having explicit data to back it up.
+# distribution function is used for discrete random variables
+# density function is used for continuous random variables
 
 #########################################
 ## Exercise 4
@@ -186,11 +183,8 @@ sum(dbinom(seq(0,5,1),size = 20,prob=0.5))
 
 ## a) Can you use the ChiSquare test in this situation? Explain and motivate
 ##  your answer
-# No the ChiSquare test would not be appropriate, there are multiple reasons:
-# 1) The values are not independent, because the students are testing the changes
-# on their sleep back-to-back, the effects from coffee can still influence them during the time they are testing tea.
-# 2) The results could either be held in a 2x2 table 
-# (coffee/tea vs 0->1, 1->0 to the previous sleeping problems) or 2x4 (coffee/tea vs sleep problems 0/1 before and after), 
+# No, this will not work as our observations are not independent. 
+# The same person is being measured at two different time points. 
 
 ## b) Is there an alternative test you could use? Why would this be appropriate?
-# McNemar's Test would be more appropriate, because the values are depended (see 4a-1) and the values are held in either a 2x2 or 2x4 table, which excludes ChiSquare.
+# We can use McNemar's Test, as here we are concerned only with the people who have changed sleepProblems after switching drinks. 
