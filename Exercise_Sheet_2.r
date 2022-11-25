@@ -15,6 +15,12 @@
 ## Name: Chaahat Jain
 ## Matriculation number: 7025099
 
+## Name: Denis Krieger
+## Matriculation Number: 7021772
+
+## Name: Eric Minas
+## Matriculation Number: 2568884
+
 ## Only 1 member needs to submit! 
 
 ###############################################################
@@ -25,7 +31,8 @@
 
 ## a) We will not use data from a normal distribution, but work with the poisson distribution, which is 
 ## often used for count data. We will use the dataset discoveries, please find out what it is about
-
+?discoveries
+str(discoveries)
 ## please run the following line to convert the data into numeric
 discoveries = as.numeric(discoveries)
 
