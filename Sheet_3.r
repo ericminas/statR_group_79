@@ -102,7 +102,7 @@ affected <- insomnia %>%
 
 count(affected) # -> 10 students
 ## i. Now filter out this part of the data and assign the result to clean
-remaining <- insomnia %>%
+clean <- insomnia %>%
   filter(date < "2021-02-15" | date > "2021-02-26")
 
 ####################################################################
@@ -118,12 +118,12 @@ remaining <- insomnia %>%
 
 ## b. conduct a chisquare test to test this hypothesis using the function chisq.test()
 ##    and assign the result to chi
-chi <- chisq.test(insomnia$drink, insomnia$sleepProblem)
+chi <- chisq.test(clean$drink, clean$sleepProblem)
 chi
 
 ## c. the last call produced a warning. To understand why this warning arises, look
 ##    at observed and expected frequencies of chi
-table(insomnia$drink, insomnia$sleepProblem, dnn= c("drinks", "sleepProblems"))
+table(clean$drink, clean$sleepProblem, dnn= c("drinks", "sleepProblems"))
 
 ## d. What are the expected frequencies? Do we need to look at expected or
 ##    observed frequencies?
@@ -144,7 +144,7 @@ table(insomnia$drink, insomnia$sleepProblem, dnn= c("drinks", "sleepProblems"))
 # We create all tables that can be produced by changing the values in rows and columns, with the constraint that all totals must stay the same
 # Then we determine the sum of probabilities of the tables which were more extreme than the original table
 # if the sum is less than 0.05, we reject the null-hypothesis
-fisher.test(table(insomnia$drink, insomnia$sleepProblem, dnn= c("drinks", "sleepProblems")))
+fisher.test(table(clean$drink, clean$sleepProblem, dnn= c("drinks", "sleepProblems")))
 
 ## g. Lastly, what is the conclusion of your test? What have you learned and what
 ##    have you not learned?
