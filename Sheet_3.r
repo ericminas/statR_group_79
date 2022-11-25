@@ -13,12 +13,14 @@
 
 
 ## Please write below your (and your teammates) name, matriculation number.
+## Name: Chaahat Jain
+## Matriculation number: 7025099
+
+## Name: Denis Krieger
+## Matriculation Number: 7021772
+
 ## Name: Eric Minas
-## Matriculation number: 2568884
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
+## Matriculation Number: 2568884
 
 ## Only 1 member needs to submit!
 
