@@ -10,12 +10,14 @@
 ## Submit your homework via cms
 
 ## Please write below your (and your teammates) name, matriculation number.
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
+## Name: Chaahat Jain
+## Matriculation number: 7025099
+
+## Name: Denis Krieger
+## Matriculation Number: 7021772
+
+## Name: Eric Minas
+## Matriculation Number: 2568884
 
 ###########################################################################################
 
