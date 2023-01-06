@@ -9,13 +9,15 @@
 ## If you need to provide a written answer, comment this out using a hashtag (#).
 ## Submit your homework via cms
 
-## Please write below your (and your teammates) name, matriculation number.
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
+## Name: Chaahat Jain
+## Matriculation number: 7025099
+
+## Name: Denis Krieger
+## Matriculation Number: 7021772
+
+## Name: Eric Minas
+## Matriculation Number: 2568884
+
 
 ###############################################################################
 ###############################################################################
@@ -81,20 +83,26 @@ ggplot(ChickWeight, aes(Time, weight, color = Chick)) +
 ##    specify:
 
 ##    1) What fixed effect(s) do you enter into the model?
-# time
+# time, diet and their interaction.
+# We choose time, because it changes predictably for each chick.
+# We choose diet since it is constant for each chick,
+# The interaction is needed, because we want to check whether the time and diet influence the weight. If that is the case then diet works.
 
 ##    2) what random effect(s) should be included to account for the repeated measures structure of the data?
-# intercept for each diet group
+# intercept for each chick, because we have different starting points and we need to make it comparable across each chick.
 
 ##    3) In addition to random intercept(s), which random slope(s) should you add to get a maximal model?
-# The time
+# Random slope is time because for every chick, we are keeping track of values at different points of time.
 
 ## f) Run the model you specified in e) using lmer() and assign it to chickmod
 chickmod <-
-  lmer(weight ~  Diet +  (1 + Time | Chick), data = ChickWeight)
+  lmer(weight ~  Time * Diet +
+         (1 + Time | Chick), data = ChickWeight)
 
 ## g) Rerun the model leaving out the interaction between Time and Diet and assign it to chicknull
-chicknull <- lmer(weight ~ (1  | Chick), data = ChickWeight)
+chicknull <-
+  lmer(weight ~ Time + Diet +
+         (1 + Time | Chick), data = ChickWeight)
 
 ## h) compare the two models using the anova() function, which performs a likelihood ratio test
 anova(chickmod, chicknull)
