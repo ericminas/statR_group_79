@@ -87,11 +87,11 @@ ggplot(ChickWeight, aes(Time, weight, color = Chick)) +
 # intercept for each diet group
 
 ##    3) In addition to random intercept(s), which random slope(s) should you add to get a maximal model?
-# none
+# The time
 
 ## f) Run the model you specified in e) using lmer() and assign it to chickmod
 chickmod <-
-  lmer(weight ~ Time * Diet +  (1  | Chick), data = ChickWeight)
+  lmer(weight ~  Diet +  (1 + Time | Chick), data = ChickWeight)
 
 ## g) Rerun the model leaving out the interaction between Time and Diet and assign it to chicknull
 chicknull <- lmer(weight ~ (1  | Chick), data = ChickWeight)
@@ -106,7 +106,7 @@ anova(chickmod, chicknull)
 print(dotplot(ranef(chickmod, condVar = TRUE),  scales = list(x = list(relation = 'free')))[["Chick"]])
 
 # The slopes (vertical lines) seem quite equal for all chickens and only the intercepts are different.
-# If that is actually the case, then the diet has no significant effect on the weight of the chicken after the observed time. 
+# If that is actually the case, then the diet has no significant effect on the weight of the chicken after the observed time.
 
 #####################################################
 ### 2. Random effect structures
@@ -156,7 +156,7 @@ m5 = lmer(RT ~ PrevType + Complex +
 
 ## lmer(advancedalgebrascore ~ mathGrade, someData)
 
-# We should include the tutor as a random effect, as the effectiveness of the tutors teaching is depending on the tutors skill, 
+# We should include the tutor as a random effect, as the effectiveness of the tutors teaching is depending on the tutors skill,
 # as well as the participants (i.e. students that only look at their phone will have worse grades than those that pay attention)
-# If the data contains the german state the student got thier final math grade in, we can also take that into account, 
+# If the data contains the german state the student got thier final math grade in, we can also take that into account,
 # because not all states teach the same solving techniques /  talk about the same things.
