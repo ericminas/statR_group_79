@@ -13,12 +13,14 @@
 
 
 ## Please write below your (and your teammates') name, matriculation number. 
-## Name: 
-## Matriculation number: 
-## Name: 
-## Matriculation number: 
-## Name: 
-## Matriculation number: 
+## Name: Chaahat Jain
+## Matriculation number: 7025099
+
+## Name: Denis Krieger
+## Matriculation Number: 7021772
+
+## Name: Eric Minas
+## Matriculation Number: 2568884
 
 ###########################################################################################
 ###########################################################################################
@@ -58,9 +60,11 @@ cor(AsiaMale, use = "pairwise.complete.obs")
 
 ## f) Concentrate on the row for the life expectancy in males. Interpret the five numbers you see there
 ##   explaining for each number which direction the correlation takes and how strong it is.
-# positive correlation in all cases except for illiteracy. 
-# strong correlation only for GDPperCapita. All others have a weak correlation. 
-# So, lifeMale has a weak negative association with illiteracy and a very strong positive association with GDP. 
+# - educationMale :       medium correlation,       direction = lower-left to upper-right
+# - lifemale :            very strong correlation,  direction = lower-left to upper-right (is the same variable)
+# - GDPPerCapita:         medium correlation,       direction = lower-left to upper-right
+# - economicActivityMale: negligible correlation,   direction = upper-left to lower-right (if any)
+# - illiteracyMale:       medium correlation,       direction = upper-left to lower-right 
 
 ## g) Is the correlation between life expectancy and GDPperCapita significant? Use cor.test()
 cor.test(AsiaMale$GDPperCapita, AsiaMale$lifeMale)
@@ -111,26 +115,26 @@ AsiaMale$GDPt = AsiaMale$GDPperCapita/1000
 GDPLife <- lm(lifeMale ~ GDPt, data = AsiaMale)
 
 ## b) Interpret the model from a. What do intercept and the coefficient of GDPt tell you?
-GDPLife
+summary(GDPLife)
 # Intercept tells us the average lifeExpectancy when GDP is 0. 
 # Coefficient tells us the average increase in lifeExpectancy predicted when GDP increases by 1 unit.
 # So, when GDP increases by 1 unit, the average lifeExpectancy goes up by half a year.
 
 ## c) What about the model fit: What proportion of the total variance is explained by your model?
 # install.packages("broom")
-library(broom)
-GDPLife %>% 
+# library(broom)
+# GDPLife %>% 
   # Get the model-level details
-  glance() %>% 
+  # glance() %>% 
   # Pull out r.squared
-  pull(r.squared)
+  # pull(r.squared)
 summary(GDPLife)
 # GDP explaines 38% of the total lifeExpectancy
 
 ## d) Now let's turn to the relationship between life expectancy and illiteracy.  Run the regression and 
 # interpret.
 IlliLife <- lm(lifeMale ~ illiteracyMale, data = AsiaMale)
-IlliLife
+summary(IlliLife)
 # So, when illiteracy decreases by 1 unit, the average lifeExpectancy goes up by around 3 months.
 
 ## e) Plot lifeMale by illiteracyMale and add a regression line to your plot
