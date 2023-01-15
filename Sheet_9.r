@@ -10,12 +10,14 @@
 ## Submit your homework via cms
 
 ## Please write below your (and your teammates) name, matriculation number.
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
-## Name:
-## Matriculation number:
+## Name: Chaahat Jain
+## Matriculation number: 7025099
+
+## Name: Denis Krieger
+## Matriculation Number: 7021772
+
+## Name: Eric Minas
+## Matriculation Number: 2568884
 
 ##################################################################################
 ##################################################################################
@@ -67,8 +69,12 @@ predict(mSurv, data.frame(
 ## e) Transform your results from d to the probability scale, using the formula given on the slides.
 ##    You can check your calculation by asserting the probabilities lie in the 0-1 range.
 ##    For whom does the model predict the higher probability of survival?
-# rose -> p(odds_rose) = 2.11 / (1 + 2.11) = 0.678
-# jack -> p(odds_jack) = -2.13 / (1 - 2.13) = 1,885 (must be wrong!)
+
+#rose
+print(exp(2.11) / (1 + exp(2.11))) # = 0.8918713
+# jack
+print(exp(-2.13) / (1 + exp(-2.13))) # = 0.106215
+# jacks's is not precise, because I rounded the value from the step before.
 
 ##################################################################################
 ## Exercise 2: Generalized Linear Mixed effect models
@@ -108,7 +114,7 @@ ggarrange(
 ## c) Can you detect an obvious relationship in any of the plots?
 # yes:
 # increased values for sleep and mood decrease the average coffee consumption.
-# increaseed values for temperature increase the average coffee consumption.
+# no obvious relationship can be found for temperature.
 
 ## d) Fit a simple linear regression model with all three predictors and store it in linmod
 linmod <- lm(coffee ~ sleep + mood + temperature, data = coffeedat)
@@ -139,12 +145,13 @@ mixedpoi <-
 ## h) Look at the summary and report what changed in comparison to both linmod and poimod.
 summary(mixedpoi)
 # The p-values got smaller again, thus the model is more confident
+# But temperature is now insignificant
 
 ## i) Finally, to make it complete, also run a mixed model using the gaussian family and store it in mixedlin
-# glmer with family = gaussian is the same as the below 
+# glmer with family = gaussian is the same as the below
 mixedlin <-  lmer (coffee ~ sleep + mood + temperature
-                    + (1 | subj),
-                    data = coffeedat)
+                   + (1 | subj),
+                   data = coffeedat)
 
 ## j) Compare the AIC for all four models. Which one has the best fit?
 AIC(linmod, poimod, mixedpoi, mixedlin)
@@ -156,4 +163,15 @@ AIC(linmod, poimod, mixedpoi, mixedlin)
 # 2) The Poission distribution is the best fit as discussed in the lecture.
 
 ## l) Finally, report on the effects of interest in light of our research hypotheses
-##    specified above for the model you chose in k)
+##    specified above for the model you chose in k
+
+# nullHyp: students consuming more coffee is not dependent on their sleep
+# We can reject this hypothesis since sleep is a significant predictor. 
+# Since slope is negative, students consume more coffee when they are tired.
+
+# nullHyp: students consuming more coffee is not dependent on their mood
+# We can reject this hypothesis since sleep is a significant predictor. 
+# Since slope is negative, students consume more coffee when they are not feeling well
+
+# nullHyp: students consuming more coffee is not dependent on temperature outside:
+# We cannot reject this hypothesis as temperature is not significant (p > 0.05)
