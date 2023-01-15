@@ -51,7 +51,8 @@ summary(mSurv)
 # intercept corresponds to first class female passengers
 
 ## c) Were men more likely to survive than women? Is the effect significant?
-# no clue
+# Changing from female to male reduces the estimate from 2.1 to -2.5. This is a significant effect (p-value < 0.05). 
+# Thus, men were less likely to survive than women.
 
 ## d) Imagine two passengers: Rose (female, 1st class passenger) and Jack (male, 3rd class passenger).
 ##    Calculate their expected survival on the logit scale (i.e. the scale of the model) 
@@ -59,13 +60,24 @@ summary(mSurv)
 predict(mSurv, data.frame(
   sex = c("female", "male"),
   passengerClass = c("1st", "3rd")
+))
+
+predict(mSurv, data.frame(
+  sex = c("female", "male"),
+  passengerClass = c("1st", "3rd")
 ), type = "response")
 
-## e) Transform your results from d to the probability scale, using the formula given on the slides. 
-##    You can check your calculation by asserting the probabilities lie in the 0-1 range. 
-##    For whom does the model predict the higher probability of survival?
+# odds rose =  2.11
+# odds jack = -2.13
 
-# The model predicts a higher chance of survival for Rose (89%) compared to Jack (10%)
+## e) Transform your results from d to the probability scale, using the formula given on the slides.
+##    You can check your calculation by asserting the probabilities lie in the 0-1 range.
+##    For whom does the model predict the higher probability of survival?
+# rose -> p(odds_rose) = exp(2.11) / (1 + exp(2.11)) = 0.891
+# jack -> p(odds_jack) = exp(-2.13) / (1 + exp(2.13)) = 0.106
+
+
+# The model predicts a higher chance of survival for Rose (89.1%) compared to Jack (10.6%)
 
 
 
@@ -90,16 +102,22 @@ predict(mSurv, data.frame(
 coffeedat <- read.csv(file = "coffee.csv")
 
 
-
-## b) Plot the number of consumed cups of coffee in three individual scatterplots 
-##    by sleep, mood, and temperature. 
+## b) Plot the number of consumed cups of coffee in three individual scatterplots
+##    by sleep, mood, and temperature.
 ##    You can use geom_jitter() to get a nicer plot
-ggplot(coffeedat, aes(sleep, coffee)) + geom_point()
-ggplot(coffeedat, aes(mood, coffee)) + geom_point()
-ggplot(coffeedat, aes(temperature, coffee)) + geom_point()
+
+# could not get it to work without a new library
+library(ggpubr)
+base_p <- ggplot(coffeedat, aes(y = coffee))
+ggarrange(
+  base_p + geom_jitter(aes(x = sleep)),
+  base_p + geom_jitter(aes(x = mood)),
+  base_p + geom_jitter(aes(x = temperature)),
+  ncol = 3
+)
 
 ## c) Can you detect an obvious relationship in any of the plots?
-# In temperature, most coffee is consumed between 10 - 25.
+# In temperature, most coffee is consumed between 10 - 25. No obvious relationship can be found. 
 # Worse mood is related to more coffee consumption.
 # Less sleep is related to more coffee consumption
 
@@ -108,16 +126,19 @@ linmod <- lm(data = coffeedat, coffee ~ sleep + mood + temperature)
 
 ## e) Fit a generalized linear model with the appropriate family 
 ##    (hint: coffee is a count variable) and store it in poimod
-
+# We use poisson because response is a count variable
 poimod <-
   glm(coffee ~ sleep + mood + temperature,
-      family = poisson ,  ### How did you figure out it should be poisson??
+      family = poisson,
       data = coffeedat)
 ## f) Look at the two summaries of the models and write what changed?
 summary(linmod)
 summary(poimod)
 
-# linear model suggests sleep and temperature are insignificant which is different from glm.
+# poimod has different values for all coefficients, this is because of the family.
+# Poisson uses logarithmic scaling, this means that the coefficient values are in the logarithmic scale as well (so coeffs are smaller).
+# The model got more confident in addition (all p-values got smaller).
+# linear model suggests sleep and temperature are insignificant which is different from poisson
 
 
 ## g) In fact, we have repeated measures in our design, so refit the model 
@@ -131,6 +152,7 @@ mixedpoi <-
 
 ## h) Look at the summary and report what changed in comparison to both linmod and poimod.
 summary(mixedpoi)
+# The p-values got smaller again, thus the model is more confident
 # temperature is now insignificant.
 
 ## i) Finally, to make it complete, also run a mixed model using the gaussian family and store it in mixedlin
@@ -141,7 +163,9 @@ mixedlin <-
 
 ## j) Compare the AIC for all four models. Which one has the best fit?
 summary(mixedlin)
-# mixedpoi is best fit. (lin does not have AIC?)
+AIC(linmod, poimod, mixedpoi, mixedlin)
+# mixedpoi is best fit since AIC is smallest.
+
 ## k) And which model is conceptually the appropriate one? Explain why.
 # mixedpoi as well:
 # 1) The model needs a random effect (and intercept), because a persons response to the factors (sleep, mood, temp.) vary from person to person.
